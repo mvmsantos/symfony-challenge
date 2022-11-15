@@ -7,10 +7,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CourseCategoryRepository;
 use App\Entity\CourseCategory;
+use Symfony\Component\HttpFoundation\Request;
 
 class CourseCategoryController extends AbstractController
 {
-  #[Route('/coursescategory', name: 'coursescategory_list', methods: ['GET'])]
+  #[Route('/coursescategory', name: 'coursesCategory_list', methods: ['GET'])]
   public function index(CourseCategoryRepository $courseCategoryRepository): JsonResponse
   {
     return $this->json([
@@ -18,78 +19,78 @@ class CourseCategoryController extends AbstractController
     ]);
   }
 
-  #[Route('/coursescategory/{coursecategory}', name: 'coursescategory_single', methods: ['GET'])]
-  public function single(int $course, CourseCategoryRepository $CourseCategoryRepository): JsonResponse
-      {
-        $course = $CourseRepository->find($course);
+  #[Route('/coursescategory/{courseCategory}', name: 'coursesCategory_single', methods: ['GET'])]
+  public function single(int $courseCategory, CourseCategoryRepository $courseCategoryRepository): JsonResponse
+  {
+    $courseCategory = $courseCategoryRepository->find($courseCategory);
 
-        if(!$course) {
-          throw $this->createNotFoundException('Course category not found!');
-        }
+    if(!$courseCategory) {
+      throw $this->createNotFoundException('Course category not found!');
+    }
 
-        return $this->json([
-          'data' => $course,
-        ]);
-      }
+    return $this->json([
+      'data' => $courseCategory,
+    ]);
+  }
 
-      #[Route('/coursescategory/{coursecategory}', name: 'coursescategory_create', methods: ['POST'])]
-      public function create(Request $request, CourseCategoryRepository $CourseCategoryRepository): JsonResponse
-      {
-        $data = $request->toArray();
+  #[Route('/coursescategory', name: 'coursescategory_create', methods: ['POST'])]
+  public function create(Request $request, CourseCategoryRepository $courseCategoryRepository): JsonResponse
+  {
+    $data = $request->toArray();
 
-        $course = new course();
-        $course->setCategory($data['category']);
-        $course->setStatus('Ativo');
-        $course->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('America/Sao_Paulo')));
-        $course->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('America/Sao_Paulo')));
+    $courseCategory = new CourseCategory();
+    $courseCategory->setCategory($data['category']);
+    $courseCategory->setStatus('Ativo');
+    $courseCategory->setCreatedAt(new \DateTimeImmutable('now', new \DateTimeZone('America/Sao_Paulo')));
+    $courseCategory->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('America/Sao_Paulo')));
 
-        $CourseCategoryRepository->save($course, true);
+    $courseCategoryRepository->save($courseCategory, true);
 
-        return $this->json([
-            'message' => 'Course category created successfully',
-            'data' => $course,
-        ], 201);
-      }
+    return $this->json([
+      'message' => 'Course category created successfully',
+      'data' => $courseCategory,
+    ], 201);
+  }
 
-      #[Route('/courses/{course}', name: 'courses_update', methods: ['PUT', 'PATCH'])]
-      public function update(int $course, Request $request, CourseRepository $CourseRepository): JsonResponse
-      {
-        $course = $CourseRepository->find($course);
+  #[Route('/coursescategory/{courseCategory}', name: 'coursescategory_update', methods: ['PUT', 'PATCH'])]
+  public function update(int $courseCategory, Request $request, CourseCategoryRepository $courseCategoryRepository): JsonResponse
+  {
+    $courseCategory = $courseCategoryRepository->find($courseCategory);
 
-        if(!$course) {
-          throw $this->createNotFoundException('course not found!');
-        }
+    if(!$courseCategory) {
+      throw $this->createNotFoundException('Course category not found!');
+    }
 
-        $data = $request->toArray();
+    $data = $request->toArray();
 
-        $course->setCategory($data['name']);
-        $course->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('America/Sao_Paulo')));
+    $courseCategory->setCategory($data['category']);
+    $courseCategory->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('America/Sao_Paulo')));
 
-        $CourseCategoryRepository->save($course, true);
+    $courseCategoryRepository->save($courseCategory, true);
 
-        return $this->json([
-            'message' => 'course updated successfully',
-            'data' => $course,
-        ], 200);
-      }
+    return $this->json([
+      'message' => 'course category updated successfully',
+      'data' => $courseCategory,
+    ], 200);
+  }
 
-      #[Route('/courses/{course}', name: 'courses_delete', methods: ['DELETE'])]
-      public function delete(int $course, Request $request, courseCategoryRepository $courseCategoryRepository): JsonResponse
-      {
-        $course = $courseCategoryRepository->find($course);
+  #[Route('/coursescategory/{courseCategory}', name: 'coursescategory_delete', methods: ['DELETE'])]
+  public function delete(int $courseCategory, Request $request, courseCategoryRepository $courseCategoryRepository): JsonResponse
+  {
+    $courseCategory = $courseCategoryRepository->find($courseCategory);
 
-        if(!$course) {
-          throw $this->createNotFoundException('course category not found!');
-        }
+    if(!$courseCategory) {
+      throw $this->createNotFoundException('course category not found!');
+    }
 
-        $course->setStatus('Inativo');
-        $course->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('America/Sao_Paulo')));
+    $courseCategory->setStatus('Inativo');
+    $courseCategory->setUpdatedAt(new \DateTimeImmutable('now', new \DateTimeZone('America/Sao_Paulo')));
 
-        $CourseCategoryRepository->save($course, true);
+    $courseCategoryRepository->save($courseCategory, true);
 
-        return $this->json([
-            'message' => 'Course category delete successfully',
-        ], 200);
-      }
+    return $this->json([
+        'message' => 'Course category delete successfully',
+    ], 200);
+  }
 }
 
